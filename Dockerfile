@@ -1,0 +1,85 @@
+# Image Python légère
+FROM python:3.11-slim
+
+# Répertoire de travail
+WORKDIR /app
+
+# Installer dépendances système
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copier requirements
+COPY requirements.txt .
+
+# Installer dépendances Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le code
+COPY api.py .
+COPY src/ ./src/
+COPY data/articles_metadata.csv ./data/
+COPY data/articles_embeddings_pca_100D.pickle ./data/
+
+# Copier seulement 50 fichiers clicks (pour limiter la taille)
+COPY data/clicks/clicks_hour_000.csv ./data/clicks/
+COPY data/clicks/clicks_hour_001.csv ./data/clicks/
+COPY data/clicks/clicks_hour_002.csv ./data/clicks/
+COPY data/clicks/clicks_hour_003.csv ./data/clicks/
+COPY data/clicks/clicks_hour_004.csv ./data/clicks/
+COPY data/clicks/clicks_hour_005.csv ./data/clicks/
+COPY data/clicks/clicks_hour_006.csv ./data/clicks/
+COPY data/clicks/clicks_hour_007.csv ./data/clicks/
+COPY data/clicks/clicks_hour_008.csv ./data/clicks/
+COPY data/clicks/clicks_hour_009.csv ./data/clicks/
+COPY data/clicks/clicks_hour_010.csv ./data/clicks/
+COPY data/clicks/clicks_hour_011.csv ./data/clicks/
+COPY data/clicks/clicks_hour_012.csv ./data/clicks/
+COPY data/clicks/clicks_hour_013.csv ./data/clicks/
+COPY data/clicks/clicks_hour_014.csv ./data/clicks/
+COPY data/clicks/clicks_hour_015.csv ./data/clicks/
+COPY data/clicks/clicks_hour_016.csv ./data/clicks/
+COPY data/clicks/clicks_hour_017.csv ./data/clicks/
+COPY data/clicks/clicks_hour_018.csv ./data/clicks/
+COPY data/clicks/clicks_hour_019.csv ./data/clicks/
+COPY data/clicks/clicks_hour_020.csv ./data/clicks/
+COPY data/clicks/clicks_hour_021.csv ./data/clicks/
+COPY data/clicks/clicks_hour_022.csv ./data/clicks/
+COPY data/clicks/clicks_hour_023.csv ./data/clicks/
+COPY data/clicks/clicks_hour_024.csv ./data/clicks/
+COPY data/clicks/clicks_hour_025.csv ./data/clicks/
+COPY data/clicks/clicks_hour_026.csv ./data/clicks/
+COPY data/clicks/clicks_hour_027.csv ./data/clicks/
+COPY data/clicks/clicks_hour_028.csv ./data/clicks/
+COPY data/clicks/clicks_hour_029.csv ./data/clicks/
+COPY data/clicks/clicks_hour_030.csv ./data/clicks/
+COPY data/clicks/clicks_hour_031.csv ./data/clicks/
+COPY data/clicks/clicks_hour_032.csv ./data/clicks/
+COPY data/clicks/clicks_hour_033.csv ./data/clicks/
+COPY data/clicks/clicks_hour_034.csv ./data/clicks/
+COPY data/clicks/clicks_hour_035.csv ./data/clicks/
+COPY data/clicks/clicks_hour_036.csv ./data/clicks/
+COPY data/clicks/clicks_hour_037.csv ./data/clicks/
+COPY data/clicks/clicks_hour_038.csv ./data/clicks/
+COPY data/clicks/clicks_hour_039.csv ./data/clicks/
+COPY data/clicks/clicks_hour_040.csv ./data/clicks/
+COPY data/clicks/clicks_hour_041.csv ./data/clicks/
+COPY data/clicks/clicks_hour_042.csv ./data/clicks/
+COPY data/clicks/clicks_hour_043.csv ./data/clicks/
+COPY data/clicks/clicks_hour_044.csv ./data/clicks/
+COPY data/clicks/clicks_hour_045.csv ./data/clicks/
+COPY data/clicks/clicks_hour_046.csv ./data/clicks/
+COPY data/clicks/clicks_hour_047.csv ./data/clicks/
+COPY data/clicks/clicks_hour_048.csv ./data/clicks/
+COPY data/clicks/clicks_hour_049.csv ./data/clicks/
+
+# Exposer le port 8080 (requis par Cloud Run)
+EXPOSE 8080
+
+# Variables d'environnement
+ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
+
+# Démarrage
+CMD exec uvicorn api:app --host 0.0.0.0 --port ${PORT} --workers 1
