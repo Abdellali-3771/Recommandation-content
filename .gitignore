@@ -1,0 +1,33 @@
+cat > .gitignore << 'EOF'
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Data (trop volumineux pour GitHub)
+data/
+*.pickle
+*.csv
+
+# Secrets
+app/.streamlit/secrets.toml
+.streamlit/secrets.toml
+
+# Notebooks
+Notebooks/
+*.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+EOF
